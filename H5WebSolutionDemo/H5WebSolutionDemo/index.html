@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
+        <body style="background-color: white;">
+            <script type="text/javascript">
+                globalObject = new Object();
+                globalObject.name = 100;
+                globalObject.nativeCallJS = function (parameter) {
+                    alert (parameter);
+                };
+            
+            var callBack = function(parameter){
+                alert(parameter);
+            }
+            function jsCallNative() {
+                window.webkit.messageHandlers.iOSWKMethod.postMessage({
+                                                                      "key":"getUrl",
+                                                                      "data":{"a":"b"},
+                                                                      "callBack":"callBack"
+                                                                      });
+            }
+            function jsCallNative2(arg) {
+                window.webkit.messageHandlers.iOSWKMethod.postMessage({
+                                                                      "key":"pay",
+                                                                      "data":{"a":arg},
+                                                                      "callBack":""
+                                                                      })
+            }
+            </script>
+            
+            <button type="button" onclick = "jsCallNative()" style="width:100%; height:30px;"/>调用OC代码</button>
+            <button type="button" onclick = "jsCallNative2('hello word')" style="width:100%; height:30px;"/>调用OC代码并传参数</button>
+        </body>
+</html>
