@@ -11,7 +11,7 @@
 @implementation WKTask
 
 - (instancetype)initWithDelegate:(id<WKTaskDelegate>)delegate responseObject:(id<NSObject>)responder jsDict:(NSDictionary *)jsDict
-{    
+{
     self = [super init];
     if (self) {
         _relatedTasks = [NSMutableArray array];
@@ -52,15 +52,16 @@
 
 - (void)performNativeMethod
 {
-    __block __typeof(self) weakSelf = self;
-    self.block = ^(NSDictionary *argsDic) {
-        [[WKTaskManager shareInstance] delTask:weakSelf];
+    __weak __typeof(self) weakSelf = self;
+    self.block = ^(NSDictionary * argsDic) {
+        __strong __typeof(weakSelf) strongSelf = weakSelf;
         NSString * args = [WKTask converDicToJsonStr:argsDic];
-        [weakSelf performJSCallBackWithArgs:args];
-        for (WKTask * relatedTask in weakSelf.relatedTasks) {
+        [strongSelf performJSCallBackWithArgs:args];
+        for (WKTask * relatedTask in strongSelf.relatedTasks) {
             [relatedTask performJSCallBackWithArgs:args];
         }
-        [weakSelf.relatedTasks removeAllObjects];
+        [strongSelf.relatedTasks removeAllObjects];
+        [[WKTaskManager shareInstance] delTask:strongSelf];
     };
     
     if (_responder && self.nativeMethod && self.nativeMethod.length) {
