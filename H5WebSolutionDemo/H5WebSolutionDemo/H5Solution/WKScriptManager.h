@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <WebKit/WebKit.h>
 
-typedef void(^WKScriptBlock)(NSDictionary * argsDic);          //native方法执行完成后，以字典形式返回给js数据<NSString,NSString>，success:为yes执行js回调，否则不执行
+typedef void(^WKScriptBlock)(NSDictionary * _Nullable argsDic);          //native方法执行完成后，以字典形式返回给js数据<NSString,NSString>，success:为yes执行js回调，否则不执行
 
 NS_ASSUME_NONNULL_BEGIN
 /**
